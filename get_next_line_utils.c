@@ -55,3 +55,16 @@ char	*ft_strdup(const char *str)
 	printf("\n%s\n", s);
 	return (s - sl);
 }
+
+void	ft_freelist(t_list *head)
+{
+	t_list *tmp;
+
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp->content);
+		free(tmp);
+	}
+}

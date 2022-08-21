@@ -38,23 +38,30 @@ t_list	*ft_lstnew(void *content)
 
 void	ft_poner(char **s, char *ls)
 {
-	int	i;
-
-	i = 0;
 	while (*ls)
-		s[0][i++] = *(ls++);
+	{
+		*(*s)= *(ls++);
+		(*s)++;
+	}
+	//printf("PRIMERA S ==== %s\n", *s);
 }
 
 void	ft_lstiter(t_list *ls, size_t (*a)(const char *)
-, void (*b)(char **s, char *l), char	**s, int *l)
+, void (*b)(char **s, char *l, int x), char	**s, int *l)
 {
-	*l = 0;
 	while (ls)
 	{
 		if (b == NULL)
-			l += a(ls->content);
+		{
+			//printf("iter 1\n");
+			*l += a(ls->content);
+			//printf("lllllllllll === %d\n", *l);
+		}
 		if (a == NULL)
-			b(s, ls->content);
+		{
+			//printf("iter 2\n");
+			b(s, (char *) ls->content, *l);
+		}
 		ls = ls->next;
 	}
 }
@@ -74,29 +81,39 @@ char	*get_next_line(int fd)
 	st = NULL;
 	while (s[i] != '\n' && read(fd, s, BUFFER_SIZE))
 	{
-		while (s[i] != '\n')
+		//printf("%s\n", s);
+		i = 0;
+		while (s[i] != '\n' && s[i])
 		{
+			//printf("te tienes que meter 5 veceess");
 			i++;
+			//printf("%d\n", i);
 			if (s[i] == '\n')
 			{
 				x = i + 1 ;
+				//printf("no te metas putaaa\n");
 				st = ft_calloc(ft_strlen(&s[i]), 1);
 				while (s[++i])
 					st[e++] = s[i];
 				s[x] = 0;
+				printf("\nst === %s\n", st);
 				i = x - 1;
-				printf("\n%s\n", st);
 			}
 		}
-		printf("\n%s\n", s);
+		
 		ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)s)));
-		printf("ls = %s\n", ls->content);
 	}
 	/////HASTA AQUI ME PARECE QUE ESTÁ DE PUTA MADRE POR QUE ME IMPRIME EN LA LISTA LO QUE QUIERO
 	ft_lstiter(ls, &ft_strlen, NULL, NULL, &x);
+	x = 0;
+	//printf("x ==== %d\n", x);
 	/////AQUI ESTA EL PROBLEMA X DA 0 POR ALGUNA RAZON INSOSPECHABLE
-	printf("\n%d\n", x);
-	s = ft_calloc(x, 1);
-	ft_lstiter(ls, NULL, &ft_poner, &s, NULL);
+	s = ft_calloc(x + 1, 1);
+	////printf("len de s ===%ld\n", ft_strlen(s));
+	ft_lstiter(ls, NULL, &ft_poner, &s, &x);
+	s -= 10;
+	//printf("PORFAAAAAAA == %s   pliiiiiiiisss\n", s);
+	ft_freelist(ls);
 	return (s);
 }
+
