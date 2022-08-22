@@ -2,13 +2,18 @@
 
 int main(void)
 {
-	char	*file;
-	int		fd;
+	//char *s;
 
-	file = "eragon.txt";
-	fd = open(file, O_RDONLY);
+	// char	*file;
+	// int		fd;
 
-	printf("%s", get_next_line(fd));
-	close(fd);
+	//file = "eragon.txt";
+	//fd = open(file, O_RDONLY);
+
+	printf("%s", get_next_line(-1));
+	//close(fd);
+	//s = 0x7fd555d005bf;
+
+	//printf("jorribool == %s", 0x7fd555d005bf);
 	return (0);
 }
