@@ -76,11 +76,31 @@ char	*get_next_line(int fd)
 	i = 0;
 	e = 0;
 	s = ft_calloc(BUFFER_SIZE + 1, 1);
-	st = NULL;
-	ls = NULL;
-	while (s[i] != '\n' && read(fd, s, BUFFER_SIZE) > 0)
+	if (st != NULL)
+	{
+		ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)st)));
+		//printf("==%s\n", ls->content);
+		free(st);
+	}
+
+	else
+	{
+		st = NULL;
+		ls = NULL;
+	}
+	// st = NULL;
+	// ls = NULL;
+	while (s[i] != '\n' && (read(fd, s, BUFFER_SIZE) > 0 || st != NULL))
 	{
 		//printf("yujuuu\n");
+		//printf("s == %s\n", s);
+		i = 0;
+		// if (st != NULL)
+		// {
+		// 	ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)st)));
+		// 	free(st);
+		// }
+
 		while (s[i] != '\n' && s[i])
 		{
 			i++;
@@ -91,13 +111,22 @@ char	*get_next_line(int fd)
 				while (s[++i])
 					st[e++] = s[i];
 				s[x] = 0;
+				// printf("%s\n", st);
 				i = x - 1;
 			}
 		}		
 		ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)s)));
+		if (s[i] != '\n')
+			ft_bzero(s, BUFFER_SIZE);
 	}
+	//s = 0x7f8e18c00640;
+	//printf("mal == %c\n", *s);
 	if (ls == NULL)
+	{
+		free(s);
+		ft_freelist(ls);
 		return(NULL);
+	}
 	free(s);
 	x = 0;
 	ft_lstiter(ls, &ft_strlen, NULL, NULL, &x);
@@ -107,6 +136,6 @@ char	*get_next_line(int fd)
 	s -= x;
 	//printf("s === %s\n", s);
 	ft_freelist(ls);
-	printf("%s", s);
+	//printf("%s", s);
 	return (s);
 }
