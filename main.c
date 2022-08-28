@@ -2,7 +2,7 @@
 
 void myleak()
 {
-	(system("leaks a.out"));
+	system("leaks a.out");
 }
 
 int main(void)
@@ -11,12 +11,13 @@ int main(void)
 	char	*file;
 	int		fd;
 
-	file = "41_with_nl.txt";
+	file = "43_with_nl.txt";
+	//write(1, "hoal\n", 5);
 	fd = open(file, O_RDONLY);
-
-	int ret = 2;
+	//printf("jgpaoj");
+	int ret = 1;
 	while(ret --)
-		printf("%s", get_next_line(fd));
+		printf("%s", get_next_line(fd));	
 	//atexit(myleak);
 	//close(fd);
 	//s = 0x7fd555d005bf;

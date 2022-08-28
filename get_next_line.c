@@ -71,39 +71,28 @@ char	*get_next_line(int fd)
 	int			i;
 	int			x;
 
-	//printf("%d", fd);
-
 	i = 0;
 	e = 0;
 	s = ft_calloc(BUFFER_SIZE + 1, 1);
-	if (st != NULL)
-	{
-		ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)st)));
-		//printf("==%s\n", ls->content);
-		free(st);
-	}
-
-	else
-	{
-		st = NULL;
-		ls = NULL;
-	}
-	// st = NULL;
-	// ls = NULL;
+			
+	ls = NULL;
 	while (s[i] != '\n' && (read(fd, s, BUFFER_SIZE) > 0 || st != NULL))
 	{
-		//printf("yujuuu\n");
-		//printf("s == %s\n", s);
 		i = 0;
-		// if (st != NULL)
-		// {
-		// 	ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)st)));
-		// 	free(st);
-		// }
+		if (st != NULL)
+		{
+			ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)st)));
+			//printf("st = %s", st);
+			free(st);
+			st = NULL;
+		}
 
+		//printf("%d\n", i);
 		while (s[i] != '\n' && s[i])
 		{
 			i++;
+
+			//printf("%d\n", i);
 			if (s[i] == '\n')
 			{
 				x = i + 1 ;
@@ -111,16 +100,14 @@ char	*get_next_line(int fd)
 				while (s[++i])
 					st[e++] = s[i];
 				s[x] = 0;
-				// printf("%s\n", st);
 				i = x - 1;
 			}
-		}		
+		}	
+			
 		ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)s)));
 		if (s[i] != '\n')
 			ft_bzero(s, BUFFER_SIZE);
 	}
-	//s = 0x7f8e18c00640;
-	//printf("mal == %c\n", *s);
 	if (ls == NULL)
 	{
 		free(s);
@@ -130,12 +117,9 @@ char	*get_next_line(int fd)
 	free(s);
 	x = 0;
 	ft_lstiter(ls, &ft_strlen, NULL, NULL, &x);
-	//printf("%d\n", x);
 	s = ft_calloc(x + 1, 1);
 	ft_lstiter(ls, NULL, (void *)ft_poner, &s, NULL);
 	s -= x;
-	//printf("s === %s\n", s);
 	ft_freelist(ls);
-	//printf("%s", s);
 	return (s);
 }

@@ -52,7 +52,6 @@ char	*ft_strdup(const char *str)
 		str ++;
 	}
 	*s = '\0';
-	//printf("\n%s\n", s);
 	return (s - sl);
 }
 
