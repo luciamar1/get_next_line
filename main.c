@@ -10,12 +10,11 @@ int main(void)
 
 	char	*file;
 	int		fd;
-
-	file = "43_with_nl.txt";
+	file = "multiple_line_no_nl.txt";
 	//write(1, "hoal\n", 5);
 	fd = open(file, O_RDONLY);
 	//printf("jgpaoj");
-	int ret = 1;
+	int ret = 4;
 	while(ret --)
 		printf("%s", get_next_line(fd));	
 	//atexit(myleak);

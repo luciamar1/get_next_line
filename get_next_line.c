@@ -73,26 +73,25 @@ char	*get_next_line(int fd)
 
 	i = 0;
 	e = 0;
-	s = ft_calloc(BUFFER_SIZE + 1, 1);
-			
+	s = ft_calloc(BUFFER_SIZE + 1, 1);	
 	ls = NULL;
 	while (s[i] != '\n' && (read(fd, s, BUFFER_SIZE) > 0 || st != NULL))
 	{
 		i = 0;
 		if (st != NULL)
 		{
-			ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)st)));
-			//printf("st = %s", st);
+			while (st[i] != '\0')
+			{
+				s[i] = st[i];
+				i++;
+			}
 			free(st);
 			st = NULL;
+			i = 0;
+			//ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)s)));
 		}
-
-		//printf("%d\n", i);
-		while (s[i] != '\n' && s[i])
+		while (s[i] && !(s[i] == '\n' && s[1+i] == '\0'))
 		{
-			i++;
-
-			//printf("%d\n", i);
 			if (s[i] == '\n')
 			{
 				x = i + 1 ;
@@ -101,9 +100,10 @@ char	*get_next_line(int fd)
 					st[e++] = s[i];
 				s[x] = 0;
 				i = x - 1;
+				break ;
 			}
-		}	
-			
+			i++;
+		}			
 		ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)s)));
 		if (s[i] != '\n')
 			ft_bzero(s, BUFFER_SIZE);
@@ -112,7 +112,7 @@ char	*get_next_line(int fd)
 	{
 		free(s);
 		ft_freelist(ls);
-		return(NULL);
+		return (NULL);
 	}
 	free(s);
 	x = 0;
