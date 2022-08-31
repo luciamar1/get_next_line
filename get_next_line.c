@@ -62,56 +62,79 @@ void	ft_lstiter(t_list *ls, size_t (*a)(const char *)
 	}
 }
 
+void	iterador(char **st, char **s, int *i)
+{
+	int	e;
+	int	x;
+
+	x = 0;
+	e = 0;
+	while ((*s)[*i])
+	{
+		if ((*s)[*i] == '\n')
+		{
+			x = *i + 1;
+			*st = ft_calloc(ft_strlen(&(s[0][*i])), 1);
+			while ((*s)[++(*i)])
+				(*st)[e++] = (*s)[*i];
+			//printf("estatica nueva == %s", *st);
+			(*s)[x] = 0;
+			*i = x - 1;
+			break ;
+		}
+		*i = *i + 1;
+	}			
+}
+
+char	*ft_copy(char *str)
+{
+	char	*ret;
+	int		counter;
+
+	ret = ft_calloc(BUFFER_SIZE + 1, 1);
+	if (!ret)
+		return (NULL);
+	counter = 0;
+	while (str[counter])
+	{
+		ret[counter] = str[counter];
+		counter++;
+	}
+	return (ret);
+}
+
 char	*get_next_line(int fd)
 {
 	char		*s;
 	static char	*st;
-	int			e;
 	t_list		*ls;
 	int			i;
 	int			x;
 
 	i = 0;
-	e = 0;
-	s = ft_calloc(BUFFER_SIZE + 1, 1);	
+	s = ft_calloc(BUFFER_SIZE + 1, 1);
 	ls = NULL;
-	while (s[i] != '\n' && (read(fd, s, BUFFER_SIZE) > 0 || st != NULL))
+
+	while (s[i] != '\n')
 	{
+		ft_bzero(s, BUFFER_SIZE + 1);
 		i = 0;
-		if (st != NULL)
+		if (st)
 		{
-			while (st[i] != '\0')
-			{
-				s[i] = st[i];
-				i++;
-			}
+			free(s);
+			s = ft_copy(st);
 			free(st);
 			st = NULL;
-			i = 0;
-			//ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)s)));
 		}
-		while (s[i] && !(s[i] == '\n' && s[1+i] == '\0'))
-		{
-			if (s[i] == '\n')
-			{
-				x = i + 1 ;
-				st = ft_calloc(ft_strlen(&s[i]), 1);
-				while (s[++i])
-					st[e++] = s[i];
-				s[x] = 0;
-				i = x - 1;
+		else
+			if (read(fd, s, BUFFER_SIZE) <= 0)
 				break ;
-			}
-			i++;
-		}			
+		iterador(&st, &s, &i);
 		ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)s)));
-		if (s[i] != '\n')
-			ft_bzero(s, BUFFER_SIZE);
 	}
 	if (ls == NULL)
 	{
 		free(s);
-		ft_freelist(ls);
 		return (NULL);
 	}
 	free(s);
@@ -121,5 +144,10 @@ char	*get_next_line(int fd)
 	ft_lstiter(ls, NULL, (void *)ft_poner, &s, NULL);
 	s -= x;
 	ft_freelist(ls);
+	if (!*s)
+	{
+		free(s);
+		return (NULL);
+	}
 	return (s);
 }

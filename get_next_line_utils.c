@@ -33,6 +33,7 @@ size_t	ft_strlen(const char *s)
 	l = 0;
 	while (s[l])
 		l++;
+	//printf("kaka\n");
 	return (l);
 }
 
