@@ -22,7 +22,7 @@ int main(void)
 		printf("%s", m);
 		free(m);
 	}	
-	//atexit(myleak);
+	atexit(myleak);
 	//close(fd);
 	//s = 0x7fd555d005bf;
 
