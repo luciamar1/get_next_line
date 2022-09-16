@@ -11,14 +11,14 @@ int main(void)
 
 	char	*file;
 	int		fd;
-	file = "43_no_nl.txt";
+	file = "empty.txt";
 	//write(1, "hoal\n", 5);
-	fd = open(file, O_RDONLY);
+	fd = -1;
 	//printf("jgpaoj");
-	int ret = 1;
+	int ret = 0;
 	while(ret --)
 	{
-		m = get_next_line(fd);
+		m = get_next_line(fd--);
 		printf("%s", m);
 		free(m);
 	}	
@@ -27,6 +27,5 @@ int main(void)
 	//s = 0x7fd555d005bf;
 
 	//printf("jorribool == %s", 0x7fd555d005bf);
-	//system("leaks a.out");
-	return (0);
+	//system("leaks a.out");git clone
 }

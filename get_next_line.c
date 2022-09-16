@@ -1,3 +1,4 @@
+
 #include "get_next_line.h"
 
 t_list	*ft_lstlast(t_list *lst)
@@ -103,50 +104,18 @@ char	*ft_copy(char *str)
 	return (ret);
 }
 
-void	bonus(t_list **est, char **st, int fd)
-{
-	void	*a;
-	t_list	*tatic;
-
-	tatic = *est;
-	a = tatic->content;//
-	if (*st)
-	{
-		while (tatic->fd != fd)
-			tatic = tatic->next;
-		tatic->content = ft_strdup(*st);
-		st = NULL;
-	}
-	else
-	{
-		while (tatic->fd != fd && tatic->content != a)
-			tatic = tatic->next;
-		if(tatic->content != a)
-		{
-			a = tatic->next;
-			tatic->next = &fd;
-			tatic->next->next = a;
-			tatic = tatic->next;
-		}
-		*st = ft_strdup(tatic->content);
-	}
-}
-
 char	*get_next_line(int fd)
 {
-	t_list *est;
 	char		*s;
 	static char	*st;
 	t_list		*ls;
 	int			i;
 	int			x;
 
-	est->content = NULL;
-	est->next = (void *)&est->content;
 	i = 0;
 	s = ft_calloc(BUFFER_SIZE + 1, 1);
 	ls = NULL;
-	bonus(&est,&st, fd);
+	
 	while (s[i] != '\n')
 	{
 		ft_bzero(s, BUFFER_SIZE + 1);
@@ -161,12 +130,15 @@ char	*get_next_line(int fd)
 		else
 			if (read(fd, s, BUFFER_SIZE) <= 0)
 				break ;
+				
 		iterador(&st, &s, &i);
 		ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)s)));
 	}
 	if (ls == NULL)
 	{
 		free(s);
+		ft_freelist(ls);
+		free(st);
 		return (NULL);
 	}
 	free(s);
