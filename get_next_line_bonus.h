@@ -34,6 +34,6 @@ void	ft_freelist(t_list *head);
 void	bonus(char **st, int fd, int n);
 void	ft_amplicirclist(t_circlist	**circu, int fd);
 char	*get_next_line(int fd);
-
+void	ft_freecirclist(t_circlist *head);
 #endif
 

@@ -33,7 +33,6 @@ size_t	ft_strlen(const char *s)
 	l = 0;
 	while (s[l])
 		l++;
-	//printf("kaka\n");
 	return (l);
 }
 
@@ -65,6 +64,26 @@ void	ft_freelist(t_list *head)
 		tmp = head;
 		head = head->next;
 		free(tmp->content);
+		free(tmp);
+	}
+}
+
+void	ft_freecirclist(t_circlist *list)
+{
+	t_circlist *tmp;
+
+	tmp = malloc(1*sizeof(t_circlist));
+	tmp = list;
+	free(tmp->content);
+	free(tmp->start);
+	free(tmp);
+	list = (t_circlist *) list->next;
+	while ((struct t_circlist *)list != list->start)
+	{
+		tmp = list;
+		list = (t_circlist *)list->next;
+		free(tmp->content);
+		free(tmp->start);
 		free(tmp);
 	}
 }

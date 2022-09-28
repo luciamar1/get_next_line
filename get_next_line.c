@@ -115,8 +115,10 @@ char	*get_next_line(int fd)
 	i = 0;
 	s = ft_calloc(BUFFER_SIZE + 1, 1);
 	ls = NULL;
-	
-	while (s[i] != '\n')
+	int nr_bytes = BUFFER_SIZE;
+	nr_bytes = read(fd, &s, BUFFER_SIZE);
+
+	while (s[i] != '\n' || s[i] != '\0')
 	{
 		ft_bzero(s, BUFFER_SIZE + 1);
 		i = 0;
