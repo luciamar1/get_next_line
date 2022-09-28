@@ -74,12 +74,25 @@ void	ft_freecirclist(t_circlist *list)
 
 	tmp = malloc(1*sizeof(t_circlist));
 	tmp = list;
+	///PROBLEMA/////
+	circu = malloc(1*sizeof(t_circlist)); 
+		circu->fd = 0;
+		circu->next = malloc(1*sizeof(t_circlist));
+		circu->next = (struct t_circlist *) circu;
+		circu->start = malloc(1*sizeof(t_circlist));
+		circu->start = (struct t_circlist *) circu;
+		circu = (t_circlist *)circu->next;
+		start = circu->start;
 	free(tmp->content);
 	free(tmp->start);
 	free(tmp);
+	printf("PUTTTAAAAA\n");
 	list = (t_circlist *) list->next;
+	printf("PUTTTAAAAA\n");
+	tmp = (t_circlist *) list->next;
 	while ((struct t_circlist *)list != list->start)
 	{
+		printf("PUTTTAAAAA\n");
 		tmp = list;
 		list = (t_circlist *)list->next;
 		free(tmp->content);
