@@ -115,10 +115,7 @@ char	*get_next_line(int fd)
 	i = 0;
 	s = ft_calloc(BUFFER_SIZE + 1, 1);
 	ls = NULL;
-	int nr_bytes = BUFFER_SIZE;
-	nr_bytes = read(fd, &s, BUFFER_SIZE);
-
-	while (s[i] != '\n' || s[i] != '\0')
+	while (s[i] != '\n')
 	{
 		ft_bzero(s, BUFFER_SIZE + 1);
 		i = 0;
@@ -132,7 +129,6 @@ char	*get_next_line(int fd)
 		else
 			if (read(fd, s, BUFFER_SIZE) <= 0)
 				break ;
-				
 		iterador(&st, &s, &i);
 		ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)s)));
 	}

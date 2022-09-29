@@ -55,48 +55,30 @@ char	*ft_strdup(const char *str)
 	return (s - sl);
 }
 
-void	ft_freelist(t_list *head)
+void	ft_freelist(t_list *lclean)
 {
-	t_list *tmp;
+	t_list *list;
 
-	while (head != NULL)
+	while (lclean != NULL)
 	{
-		tmp = head;
-		head = head->next;
-		free(tmp->content);
-		free(tmp);
+		list = lclean;
+		lclean = lclean->next;
+		free(list->content);
+		free(list);
 	}
 }
 
-void	ft_freecirclist(t_circlist *list)
+void	ft_freecirclist(t_circlist *lclean)
 {
-	t_circlist *tmp;
+	struct t_circlist	*start;
+	struct t_circlist	*aux;
 
-	tmp = malloc(1*sizeof(t_circlist));
-	tmp = list;
-	///PROBLEMA/////
-	circu = malloc(1*sizeof(t_circlist)); 
-		circu->fd = 0;
-		circu->next = malloc(1*sizeof(t_circlist));
-		circu->next = (struct t_circlist *) circu;
-		circu->start = malloc(1*sizeof(t_circlist));
-		circu->start = (struct t_circlist *) circu;
-		circu = (t_circlist *)circu->next;
-		start = circu->start;
-	free(tmp->content);
-	free(tmp->start);
-	free(tmp);
-	printf("PUTTTAAAAA\n");
-	list = (t_circlist *) list->next;
-	printf("PUTTTAAAAA\n");
-	tmp = (t_circlist *) list->next;
-	while ((struct t_circlist *)list != list->start)
+	while (lclean != start)
 	{
-		printf("PUTTTAAAAA\n");
-		tmp = list;
-		list = (t_circlist *)list->next;
-		free(tmp->content);
-		free(tmp->start);
-		free(tmp);
+		start = (struct t_circlistt *)lclean->start;
+		aux = lclean->next;
+		free(lclean->content);
+		free(lclean);
+		lclean = aux;
 	}
 }

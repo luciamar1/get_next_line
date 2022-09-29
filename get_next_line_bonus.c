@@ -40,6 +40,7 @@ void	ft_poner(char **s, char *ls)
 {
 	while (*ls)
 	{
+		printf("%s", ls);
 		*(*s) = *(ls++);
 		(*s)++;
 	}
@@ -109,7 +110,8 @@ void	bonus(char **st, int fd, int n)
 	if (n == 3)
 	{
 		ft_freecirclist(circu);
-		free(*st);
+		//free(*st);
+		//printf("GUARRAAAAA\n");
 		//printf("PUTTTAAAAA\n");
 	}
 }
@@ -124,8 +126,7 @@ void	iterador(char **st, char **s, int *i, int fd)
 	while ((*s)[*i])
 	{
 		if ((*s)[++(*i)] == '\n')
-		{
-			
+		{	
 			x = *i + 1;
 			free(*st);
 			*st = ft_calloc(ft_strlen(&(s[0][*i])), 1);
@@ -134,8 +135,8 @@ void	iterador(char **st, char **s, int *i, int fd)
 				(*st)[e++] = (*s)[*i];
 			(*s)[x] = 0;
 			*i = x - 1;
+			printf("estaticaaaa == %s\n", *st);
 			bonus(st, fd, 2);
-			printf("PUTTTAAAAA\n");
 			break ;
 		}
 		*i = *i + 1;
@@ -186,20 +187,26 @@ char	*get_next_line_bonus(int fd)
 		else
 			if (read(fd, s, BUFFER_SIZE)<= 0)
 			{
-				//printf("PUTTTAAAAA\n");
 				bonus(&st, fd, 3);
 				break;
 			}
 			//printf("PUTTTAAAAA\n");
 		iterador(&st, &s, &i, fd);
 		ft_lstadd_back(&ls, ft_lstnew(ft_strdup((const char *)s)));
+		printf("s = %s\n", s);
+		printf("st = %s\n", st);
 	}
+	while (ls != NULL)
+	{
+		ls = ls->next;
+	}
+	printf("listaaaa == %s\n", ls->content);
 	if (ls == NULL)
 	{
 		free(s);
 		ft_freelist(ls);
 		free(st);
-		bonus(&st, fd, 3);
+		//bonus(&st, fd, 3);
 		return (NULL);
 	}
 	free(s);
@@ -208,11 +215,15 @@ char	*get_next_line_bonus(int fd)
 	s = ft_calloc(x + 1, 1);
 	ft_lstiter(ls, NULL, (void *)ft_poner, &s, NULL);
 	s -= x;
+	printf("%s\n", s);
 	ft_freelist(ls);
 	if (!*s)
 	{
 		free(s);
+		//printf("GUARRAAAAA\n");
 		return (NULL);
 	}
+	// printf("GUARRAAAAA\n");
+	//printf("%s\n", s);
 	return (s);
 }
