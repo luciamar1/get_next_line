@@ -70,12 +70,12 @@ void	ft_freelist(t_list *lclean)
 
 void	ft_freecirclist(t_circlist *lclean)
 {
-	struct t_circlist	*start;
+	struct t_circlist	*star;
 	struct t_circlist	*aux;
 
-	while (lclean != start)
+	while ((t_circlist *)lclean != (t_circlist *)star)
 	{
-		start = (struct t_circlistt *)lclean->start;
+		star = (struct t_circlist *)lclean->start;
 		aux = lclean->next;
 		free(lclean->content);
 		free(lclean);

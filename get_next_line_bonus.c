@@ -63,7 +63,7 @@ void	ft_lstiter(t_list *ls, size_t (*a)(const char *)
 	}
 }
 
-void	ft_amplicirclist(t_circlist	**circu, int fd)
+void	ft_amplicirclist(t_circlist	**circu, int fd, struct t_circlist **start)
 {
 	t_circlist	*aux;
 	t_circlist	*circ;
@@ -74,7 +74,10 @@ void	ft_amplicirclist(t_circlist	**circu, int fd)
 	aux->fd = fd;
 	circ->next = malloc(1*sizeof(t_circlist));
 	circ->next = (struct t_circlist *)aux;
+	circ->start = malloc(1*sizeof(t_circlist));
+	circ->start = *start;
 	circ->content = NULL;
+	circ->fd = fd;
 	*circu = circ;
 	circ = NULL;
 }
@@ -95,12 +98,14 @@ void	bonus(char **st, int fd, int n)
 		start = circu->start;
 	}
 	//printf("PUTTTAAAAA\n");
-	while (circu->fd != fd && (struct t_circlist *)circu != circu->start)
+	//printf("yiiiiiiyiyiiyiyiyiyiiyiyiyiyiyiiyiyiyiiyiyi%d\n", fd);
+	/////////////////////////////////FALLLLLLLAAAAAA//////////////////////
+	while (circu && circu->fd != fd && circu != (t_circlist *) start && printf("\nhola\n"))
 		circu = (t_circlist *)circu->next;
-	//printf("PUTTTAAAAA\n");
+	//printf("8798787987PUTTTAAAAA\n");
 	if (circu->fd != fd)
 	{
-		ft_amplicirclist(&circu, fd);
+		ft_amplicirclist(&circu, fd, &start);
 		circu->start = start;
 	}
 	if (n == 1)
@@ -125,17 +130,19 @@ void	iterador(char **st, char **s, int *i, int fd)
 	e = 0;
 	while ((*s)[*i])
 	{
+		// printf("sssss== %s\n", *s);
+		// printf("estaticaa == %s\n", *st);
+		// printf("enterooooo %d\n", *i);
 		if ((*s)[++(*i)] == '\n')
 		{	
 			x = *i + 1;
 			free(*st);
 			*st = ft_calloc(ft_strlen(&(s[0][*i])), 1);
-			//printf("PUTTTAAAAA\n");
 			while ((*s)[++(*i)])
 				(*st)[e++] = (*s)[*i];
 			(*s)[x] = 0;
 			*i = x - 1;
-			printf("estaticaaaa == %s\n", *st);
+			//printf("estaticaaaa == %s\n", *st);
 			bonus(st, fd, 2);
 			break ;
 		}
@@ -200,7 +207,8 @@ char	*get_next_line_bonus(int fd)
 	{
 		ls = ls->next;
 	}
-	printf("listaaaa == %s\n", ls->content);
+
+	//printf("listaaaa == %s\n", ls->content);
 	if (ls == NULL)
 	{
 		free(s);
